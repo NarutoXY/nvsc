@@ -2,27 +2,26 @@ local opt = vim.opt
 local g = vim.g
 
 local options = {
-   clipboard = "unnamedplus",
-   cmdheight = 1,
-   ruler = false,
-   hidden = true,
-   ignorecase = true,
-   smartcase = true,
-   mapleader = " ",
-   mouse = "a",
-   number = true,
-   numberwidth = 2,
-   relativenumber = true,
-   expandtab = true,
-   shiftwidth = 2,
-   smartindent = true,
-   tabstop = 2,
-   timeoutlen = 400,
-   updatetime = 100,
-   undofile = true,
-   undodir = "/home/naruto/.cache/nvim/undo",
-   fillchars = { eob = " " },
-
+  clipboard = "unnamedplus",
+  cmdheight = 1,
+  ruler = false,
+  hidden = true,
+  ignorecase = true,
+  smartcase = true,
+  mapleader = " ",
+  mouse = "a",
+  number = true,
+  numberwidth = 2,
+  relativenumber = true,
+  expandtab = true,
+  shiftwidth = 2,
+  smartindent = true,
+  tabstop = 2,
+  timeoutlen = 400,
+  updatetime = 100,
+  undofile = true,
+  undodir = "/home/naruto/.cache/nvim/undo",
+  fillchars = { eob = " " },
 }
 
 opt.title = true
@@ -50,7 +49,7 @@ opt.relativenumber = options.relativenumber
 opt.ruler = options.ruler
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append("sI")
 
 opt.signcolumn = "yes"
 opt.splitbelow = true
@@ -65,33 +64,33 @@ opt.updatetime = options.updatetime
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append("<>[]hl")
 
 g.mapleader = options.mapleader
 
 -- disable some builtin vim plugins
 local disabled_built_ins = {
-   "2html_plugin",
-   "getscript",
-   "getscriptPlugin",
-   "gzip",
-   "logipat",
-   "netrw",
-   "netrwPlugin",
-   "netrwSettings",
-   "netrwFileHandlers",
-   "matchit",
-   "tar",
-   "tarPlugin",
-   "rrhelper",
-   "spellfile_plugin",
-   "vimball",
-   "vimballPlugin",
-   "zip",
-   "zipPlugin",
+  "2html_plugin",
+  "getscript",
+  "getscriptPlugin",
+  "gzip",
+  "logipat",
+  "netrw",
+  "netrwPlugin",
+  "netrwSettings",
+  "netrwFileHandlers",
+  "matchit",
+  "tar",
+  "tarPlugin",
+  "rrhelper",
+  "spellfile_plugin",
+  "vimball",
+  "vimballPlugin",
+  "zip",
+  "zipPlugin",
 }
 
 for k = 1, #disabled_built_ins do
-   g["loaded_" .. disabled_built_ins[k]] = 1
-   Log.trace("Disabled ", disabled_built_ins[k])
+  g["loaded_" .. disabled_built_ins[k]] = 1
+  Log.trace("Disabled ", disabled_built_ins[k])
 end
