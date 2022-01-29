@@ -38,13 +38,12 @@ require("packer").startup({
 
     use({
       "lewis6991/impatient.nvim",
-      event = "VimEnter",
       config = function()
         require("impatient").enable_profile()
       end,
     })
 
-    use({ "nvim-lua/plenary.nvim", module = "plenary" })
+    use({ "klen/plenary.nvim-1", module = "plenary" })
 
     -- create directories if they don't exist
     use({
@@ -56,30 +55,59 @@ require("packer").startup({
     })
 
     use({
+      "sainnhe/gruvbox-material"
+    })
+    use({
       "~/projects/nvim_plugins/themer",
       config = function()
-        require("themer").setup({
-          colorscheme = "onedark",
-          styles = {
-            comment = { style = "italic" },
-            ["function"] = { style = "italic" },
-            functionbuiltin = { style = "italic" },
-            variable = { style = "italic" },
-            variableBuiltIn = { style = "italic" },
-            parameter = { style = "italic" },
-          },
-          remaps = {
-            global = {
-              base = {
-                NormalFloat = { bg = "NONE" },
-              },
-            },
-          },
-        })
-      end,
-      after = "impatient.nvim",
-    })
 
+        require("themer").setup({
+    colorscheme = "gruvbox-material-dark-hard", -- default colorscheme
+    transparent = false,
+    dim_inactive = true,
+    term_colors = true,
+    styles = {
+        ["function"] = { style = "italic" },
+        functionBuiltIn = { style = "italic" },
+        comment = { style = "bold" },
+        constant = { style = "bold" },
+        number = { style = "bold" },
+        diagnostic = {
+            underline = {
+                error = { style = "underline" },
+                warn = { style = "underline" },
+            },
+            virtual_text = {
+                error = { style = "italic" },
+                warn = { style = "italic" },
+            },
+        },
+    },
+    telescope_mappings = {
+        ["n"] = {
+            ["<CR>"] = "enter",
+            ["k"] = "prev_color",
+            ["j"] = "next_color",
+            ["p"] = "preview",
+        },
+        ["i"] = {
+            ["<CR>"] = "enter",
+            ["<S-Tab>"] = "prev_color",
+            ["<Tab>"] = "next_color",
+            ["<C-p>"] = "preview",
+        },
+    },
+})
+
+      end,
+      event = "BufWinEnter",
+      module = "themer",
+    })
+  
+    use({
+      "~/projects/nvim_plugins/ytmmusic.lua/",
+      module = "ytmmusic"
+    })
     use({ "tami5/sqlite.lua", module = "sqlite" })
 
     -- better escape
@@ -104,11 +132,12 @@ require("packer").startup({
     use({
       "nvim-treesitter/nvim-treesitter",
       run = ":TSUpdate",
+      ft = "norg",
       config = function()
         require("modules.plugin.treesitter")
       end,
+      event = "BufRead",
       requires = {
-        "nvim-treesitter/nvim-treesitter-refactor",
         "nvim-treesitter/nvim-treesitter-textobjects",
         {
           "romgrk/nvim-treesitter-context",
@@ -228,6 +257,7 @@ require("packer").startup({
       config = function()
         vim.notify = require("notify")
       end,
+      event = "BufWinEnter",
     })
 
     use({
@@ -254,7 +284,7 @@ require("packer").startup({
       config = function()
         require("modules.plugin.neorg")
       end,
-
+      ft = "norg",
       requires = {
         "terrortylor/neorg-telescope",
       },
@@ -399,9 +429,9 @@ require("packer").startup({
 
     -- completition
     use({
-      "iron-E/nvim-cmp",
+      "hrsh7th/nvim-cmp",
+      ft = "norg",
       event = { "InsertEnter", "CmdLineEnter" },
-      branch = "feat/completion-menu-borders",
       config = [[ require("modules.plugin.cmp") ]],
       requires = {
         {
@@ -424,8 +454,6 @@ require("packer").startup({
     use({ "hrsh7th/cmp-emoji", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
-    use({ "kdheepak/cmp-latex-symbols", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-calc", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-cmdline", after = "nvim-cmp" })

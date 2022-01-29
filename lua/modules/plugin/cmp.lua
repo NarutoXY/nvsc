@@ -6,6 +6,11 @@ local types = require("cmp.types")
 local luasnip = require("luasnip")
 local neogen = require("neogen")
 
+local check_back_space = function()
+    local col = vim.fn.col(".") - 1
+    return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
+end
+
 ---Returns treesitter highlights under cursor
 ---@return table highlights
 local function get_treesitter_hl()
@@ -111,58 +116,38 @@ cmp.setup({
     end,
   },
   mapping = {
-    ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-    ["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-    -- ["<tab>"] = cmp.mapping(cmp.mapping.complete(), { "i" }),
-    ["<C-e>"] = cmp.mapping({
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
-    }),
-    ["<C-j>"] = cmp.mapping({
-      i = cmp.mapping.select_next_item({
-        behavior = cmp.SelectBehavior.Select,
-      }),
-      c = cmp.mapping.select_next_item({
-        behavior = cmp.SelectBehavior.Insert,
-      }),
-    }),
-    ["<C-k>"] = cmp.mapping({
-      i = cmp.mapping.select_prev_item({
-        behavior = cmp.SelectBehavior.Select,
-      }),
-      c = cmp.mapping.select_prev_item({
-        behavior = cmp.SelectBehavior.Insert,
-      }),
-    }),
-    ["<a-CR>"] = cmp.mapping.confirm({
-      select = true,
-      behavior = cmp.ConfirmBehavior.Insert,
-    }),
-    ["<C-l>"] = cmp.mapping(function(fallback)
-      if luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
-      elseif neogen.jumpable() then
-        vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
-      else
-        fallback()
-      end
-    end, {
-      "i",
-      "s",
-    }),
-    ["<C-h>"] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
-      elseif neogen.jumpable(-1) then
-        vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_prev()<CR>"), "")
-      else
-        fallback()
-      end
-    end, {
-      "i",
-      "s",
-    }),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Insert,
+            select = true
+        }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            if vim.fn.pumvisible() == 1 then
+                if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or
+                    vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+                    return vim.fn.feedkeys(t(
+                                               "<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+                end
+
+                vim.fn.feedkeys(t("<C-n>"), "n")
+            elseif check_back_space() then
+                vim.fn.feedkeys(t("<tab>"), "n")
+            else
+                fallback()
+            end
+        end, {"i", "s"}),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if vim.fn.pumvisible() == 1 then
+                vim.fn.feedkeys(t("<C-p>"), "n")
+            else
+                fallback()
+            end
+        end, {"i", "s"})
     -- ["<Tab>"] = cmp.mapping(function(fallback)
     --   if cmp.visible() then
     --     -- cmp.select_next_item {}

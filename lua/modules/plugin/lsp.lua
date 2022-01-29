@@ -40,6 +40,14 @@ local servers = {
   "vuels",
   "tsserver",
   "tailwindcss",
+  "svelte",
+  "html",
+  "cssls",
+  "jsonls",
+  "gopls",
+  "pyright",
+  "rust_analyzer",
+  "rnix"
 }
 
 local config = { on_attach = on_attach, capabilities = capabilities }

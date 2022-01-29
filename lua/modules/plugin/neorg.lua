@@ -26,13 +26,11 @@ end)
 require("neorg").setup({
   load = {
     ["core.defaults"] = {}, -- Load all the default modules
-    ["core.integrations.telescope"] = {},
     ["core.norg.completion"] = {
       config = {
         engine = "nvim-cmp",
       },
     },
-    ["external.zettelkasten"] = {},
     ["core.norg.concealer"] = {
       config = {
         markup_preset = "dimmed",
@@ -63,26 +61,10 @@ require("neorg").setup({
         },
       },
     },
-    ["core.presenter"] = {
-      config = {
-        zen_mode = "zen-mode",
-      },
-    },
     ["core.keybinds"] = {
       config = {
         default_keybinds = false,
         neorg_leader = "<Leader>o",
-      },
-    },
-    ["core.norg.dirman"] = {
-      config = {
-        workspaces = {
-          startup = "~/startup.nvim",
-          example_ws = "~/example_workspaces/gtd/",
-          gtd = "~/gtd",
-          dany_gtd = "~/dany_gtd/",
-          notes = "~notes",
-        },
       },
     },
     ["core.gtd.base"] = {
@@ -94,18 +76,6 @@ require("neorg").setup({
 
         -- workspace = "example_ws",
         -- exclude = { "" },
-      },
-    },
-    ["core.norg.qol.toc"] = {
-      config = {
-        close_split_on_jump = false,
-        toc_split_placement = "left",
-      },
-    },
-    ["core.norg.journal"] = {
-      config = {
-        journal_folder = "my_journal",
-        use_folders = false,
       },
     },
   },
@@ -123,7 +93,7 @@ neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, con
       },
     },
   }, {
-    silent = tru,
+    silent = true,
   })
 end)
 
