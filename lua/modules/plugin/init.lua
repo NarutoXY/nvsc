@@ -167,6 +167,7 @@ plugins = Utils.plugin.append_plugin(plugins, require("config").plugins.extra_pl
 
 packer.init({
 	git = { depth = 1 },
+  compile_path = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
 	profile = { enable = true },
 	display = {
 		done_sym = "✓",
