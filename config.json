@@ -1,0 +1,33 @@
+{
+  "mappings": {},
+  "plugin": [
+    "nvim-treesitter",
+    "playground",
+    "telescope.nvim",
+    "nvim-cmp",
+    "neogen"
+  ],
+  "lspServers": [
+  "sumneko_lua",
+  "pyright",
+  "vuels",
+  "tsserver",
+  "tailwindcss",
+  "svelte",
+  "html",
+  "cssls",
+  "jsonls",
+  "gopls",
+  "pyright",
+  "rust_analyzer",
+  "rnix"
+  ],
+  "opts": {
+    "termguicolors": false
+  },
+  "pluginConfig": {},
+  "extraPlugin": "require('config.plugins').extra_plug",
+  "removeDefaultPlugin": [],
+  "preFunc": null,
+  "postFunc": null
+}

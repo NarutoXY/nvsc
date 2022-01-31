@@ -6,11 +6,6 @@ local types = require("cmp.types")
 local luasnip = require("luasnip")
 local neogen = require("neogen")
 
-local check_back_space = function()
-    local col = vim.fn.col(".") - 1
-    return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
-end
-
 ---Returns treesitter highlights under cursor
 ---@return table highlights
 local function get_treesitter_hl()
@@ -76,7 +71,7 @@ local function get_treesitter_hl()
 end
 local str = require("cmp.utils.str")
 
-local kind = require("modules.plugin.lsp_kind")
+local kind = require("modules.plugin.config.lsp_kind")
 
 luasnip.config.setup({
   region_check_events = "CursorMoved",
@@ -116,80 +111,62 @@ cmp.setup({
     end,
   },
   mapping = {
-        ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<C-n>'] = cmp.mapping.select_next_item(),
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.close(),
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Insert,
-            select = true
-        }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if vim.fn.pumvisible() == 1 then
-                if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or
-                    vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-                    return vim.fn.feedkeys(t(
-                                               "<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
-                end
-
-                vim.fn.feedkeys(t("<C-n>"), "n")
-            elseif check_back_space() then
-                vim.fn.feedkeys(t("<tab>"), "n")
-            else
-                fallback()
-            end
-        end, {"i", "s"}),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if vim.fn.pumvisible() == 1 then
-                vim.fn.feedkeys(t("<C-p>"), "n")
-            else
-                fallback()
-            end
-        end, {"i", "s"})
-    -- ["<Tab>"] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     -- cmp.select_next_item {}
-    --     cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-    --   elseif luasnip.expand_or_jumpable() then
-    --     vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
-    --   elseif check_backspace() then
-    --     vim.fn.feedkeys(t("<Tab>"), "n")
-    --   else
-    --     vim.fn.feedkeys(t("<C-Space>")) -- Manual trigger
-    --   end
-    -- end, {
-    --   "i",
-    --   "s",
-    --   -- "c",
-    -- }),
-    -- ["<S-Tab>"] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-    --   elseif luasnip.jumpable(-1) then
-    --     vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
-    --   else
-    --     fallback()
-    --   end
-    -- end, {
-    --   "i",
-    --   "s",
-    --   -- "c",
-    -- }),
+ 		["<C-j>"] = cmp.mapping(
+			cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+			{ "i", "s", "c" }
+		),
+		["<C-k>"] = cmp.mapping(
+			cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+			{ "i", "s", "c" }
+		),
+		["<Tab>"] = cmp.mapping(function(fallback)
+			-- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
+			if cmp.visible() then
+				local entry = cmp.get_selected_entry()
+				if not entry then
+					cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+				end
+				cmp.confirm()
+			else
+				fallback()
+			end
+		end, {
+			"i",
+			"s",
+			"c",
+		}),
+		["<C-l>"] = cmp.mapping(function(fallback)
+			if luasnip.expand_or_jumpable() then
+				vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
+			elseif neogen.jumpable() then
+				vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
+			else
+				fallback()
+			end
+		end, {
+            "i",
+			"s",
+		}),
+		["<C-h>"] = cmp.mapping(function(fallback)
+			if luasnip.jumpable(-1) then
+				vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
+			elseif neogen.jumpable(-1) then
+				vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_prev()<CR>"), "")
+			else
+				fallback()
+			end
+		end, {
+			"i",
+			"s",
+		}),
   },
 
   sources = {
     { name = "buffer", priority = 7, keyword_length = 4 },
     { name = "path", priority = 5 },
     { name = "emoji", priority = 3 },
-    { name = "greek", priority = 1 },
-    { name = "calc", priority = 4 },
     { name = "nvim_lsp", priority = 9 },
     { name = "luasnip", priority = 8 },
-    { name = "neorg", priority = 6 },
-    { name = "latex_symbols", priority = 1 },
-    { name = "nvim_lsp_signature_help", priority = 10 },
   },
   enabled = function()
     -- if require"cmp.config.context".in_treesitter_capture("comment")==true or require"cmp.config.context".in_syntax_group("Comment") then

@@ -1,7 +1,7 @@
 local opt = vim.opt
 local g = vim.g
 
-local options = {
+local opts = {
   clipboard = "unnamedplus",
   cmdheight = 1,
   ruler = false,
@@ -22,54 +22,37 @@ local options = {
   undofile = true,
   undodir = "/home/naruto/.cache/nvim/undo",
   fillchars = { eob = " " },
+  title = true,
+  cul = true,
+  signcolumn = "yes",
+  splitbelow = true,
+  splitright = true,
+  termguicolors = true,
+  shortmess = "sI",
 }
 
-opt.title = true
-opt.clipboard = options.clipboard
-opt.cmdheight = options.cmdheight
-opt.cul = true -- cursor line
+opts = vim.tbl_deep_extend("force", opts, Config.opts)
 
--- Indentline
-opt.expandtab = options.expandtab
-opt.shiftwidth = options.shiftwidth
-opt.smartindent = options.smartindent
+local set_opts = function(key, val)
+  opt[key] = val
+end
 
--- disable tilde on end of buffer: https://github.com/neovim/neovim/pull/8546#issuecomment-643643758
-opt.fillchars = options.fillchars
-
-opt.hidden = options.hidden
-opt.ignorecase = options.ignorecase
-opt.smartcase = options.smartcase
-opt.mouse = options.mouse
-
--- Numbers
-opt.number = options.number
-opt.numberwidth = options.numberwidth
-opt.relativenumber = options.relativenumber
-opt.ruler = options.ruler
+for k, v in pairs(opts) do
+  pcall(set_opts, k, v)
+end
 
 -- disable nvim intro
-opt.shortmess:append("sI")
-
-opt.signcolumn = "yes"
-opt.splitbelow = true
-opt.splitright = true
-opt.tabstop = options.tabstop
-opt.termguicolors = true
-opt.timeoutlen = options.timeoutlen
-opt.undofile = options.undofile
-
--- interval for writing swap file to disk, also used by gitsigns
-opt.updatetime = options.updatetime
+opt.shortmess:append(opts.shortmess)
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append("<>[]hl")
 
-g.mapleader = options.mapleader
+g.mapleader = opts.mapleader
 
 -- disable some builtin vim plugins
 local disabled_built_ins = {
+  "did_load_filetype",
   "2html_plugin",
   "getscript",
   "getscriptPlugin",

@@ -1,6 +1,3 @@
-local blankline = {}
-
-blankline.setup = function()
   vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }
   vim.g.indent_blankline_filetype_exclude = {
     "help",
@@ -44,6 +41,9 @@ blankline.setup = function()
   }
   -- HACK: work-around for https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
   vim.wo.colorcolumn = "99999"
-end
 
-return blankline
+
+require("indent_blankline").setup {
+    show_current_context = true,
+    show_current_context_start = true,
+}

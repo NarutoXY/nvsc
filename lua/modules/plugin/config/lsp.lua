@@ -29,26 +29,12 @@ local on_attach = function(_, bufnr)
 end
 
 -- Add completion capabilities (completion, snippets)
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) 
 
 -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for more lsp servers
 -- Use these servers and default configs
 -- Add more servers here
-local servers = {
-  "sumneko_lua",
-  "pyright",
-  "vuels",
-  "tsserver",
-  "tailwindcss",
-  "svelte",
-  "html",
-  "cssls",
-  "jsonls",
-  "gopls",
-  "pyright",
-  "rust_analyzer",
-  "rnix"
-}
+local servers = Config.lspServers or {}
 
 local config = { on_attach = on_attach, capabilities = capabilities }
 
@@ -119,6 +105,13 @@ for _, server in pairs(servers) do
     nvim_lsp[server].setup(config)
   end
 end
+
+require("lsp_signature").setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "rounded",
+  },
+})
 
 -- Change icons for Lsp Diagnostic
 local signs = { Error = "", Warn = "", Info = "כֿ", Hint = "" }
