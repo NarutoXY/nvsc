@@ -133,6 +133,15 @@ _G.packer_plugins = {
     path = "/home/naruto/.local/share/nvim/site/pack/packer/opt/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
   },
+  ["graphene.lua"] = {
+    commands = { "Graphene" },
+    config = { "\27LJ\2\nû\1\0\0\r\0\15\0 6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\r\0006\3\3\0009\3\4\3'\5\5\0006\6\6\0009\6\a\6'\b\b\0B\6\2\0026\a\6\0009\a\a\a'\t\t\0B\a\2\0026\b\6\0009\b\a\b'\n\n\0B\b\2\0026\t\6\0009\t\a\t'\v\v\0B\t\2\0026\n\6\0009\n\a\n'\f\f\0B\n\2\0A\3\5\2=\3\14\2B\0\2\1K\0\1\0\15outputFile\1\0\0\a%M\a%H\a%d\a%m\a%Y\tdate\aos.$XDG_PICTURES_DIR/GRAPHENE_%s-%s-%s_%s-%s\vformat\vstring\nsetup\rgraphene\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/home/naruto/.local/share/nvim/site/pack/packer/opt/graphene.lua",
+    url = "/home/naruto/projects/nvim_plugins/graphene.lua"
+  },
   ["impatient.nvim"] = {
     loaded = true,
     path = "/home/naruto/.local/share/nvim/site/pack/packer/start/impatient.nvim",
@@ -201,7 +210,7 @@ _G.packer_plugins = {
     url = "https://github.com/akinsho/nvim-bufferline.lua"
   },
   ["nvim-cmp"] = {
-    after = { "LuaSnip", "nvim-autopairs" },
+    after = { "nvim-autopairs", "LuaSnip" },
     config = { 'require("modules.plugin.config.cmp")' },
     loaded = false,
     needs_bufread = false,
@@ -344,20 +353,21 @@ end
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TSPlaygroundToggle lua require("packer.load")({'playground'}, { cmd = "TSPlaygroundToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TSHighlightCapturesUnderCursor lua require("packer.load")({'playground'}, { cmd = "TSHighlightCapturesUnderCursor", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file TSPlaygroundToggle lua require("packer.load")({'playground'}, { cmd = "TSPlaygroundToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Graphene lua require("packer.load")({'graphene.lua'}, { cmd = "Graphene", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'LuaSnip', 'nvim-cmp'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au CmdLineEnter * ++once lua require("packer.load")({'nvim-cmp'}, { event = "CmdLineEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-cmp', 'LuaSnip'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufWinEnter * ++once lua require("packer.load")({'indent-blankline.nvim', 'nvim-toggleterm.lua', 'nvim-bufferline.lua', 'themer', 'which-key.nvim'}, { event = "BufWinEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au BufReadPost * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufReadPost *" }, _G.packer_plugins)]]
 vim.cmd [[au ColorScheme * ++once lua require("packer.load")({'gitsigns.nvim'}, { event = "ColorScheme *" }, _G.packer_plugins)]]
-vim.cmd [[au BufWinEnter * ++once lua require("packer.load")({'which-key.nvim', 'nvim-bufferline.lua', 'nvim-toggleterm.lua', 'themer', 'indent-blankline.nvim'}, { event = "BufWinEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au CmdLineEnter * ++once lua require("packer.load")({'nvim-cmp'}, { event = "CmdLineEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end

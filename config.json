@@ -23,11 +23,8 @@
   "rnix"
   ],
   "opts": {
-    "termguicolors": false
   },
   "pluginConfig": {},
   "extraPlugin": "require('config.plugins').extra_plug",
-  "removeDefaultPlugin": [],
-  "preFunc": null,
-  "postFunc": null
+  "removeDefaultPlugin": []
 }

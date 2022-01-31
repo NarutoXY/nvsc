@@ -22,6 +22,15 @@ local config = {
         "~/projects/nvim_plugins/ytmmusic.lua",
         module = "ytmmusic",
       },
+      {
+        "~/projects/nvim_plugins/graphene.lua",
+        cmd = "Graphene",
+        config = function ()
+          require("graphene").setup({       
+	outputFile = string.format("$XDG_PICTURES_DIR/GRAPHENE_%s-%s-%s_%s-%s", os.date("%Y"), os.date("%m"), os.date("%d"), os.date("%H"), os.date("%M")),
+          })
+        end
+      },
     },
   },
   preFunc = function() end,
