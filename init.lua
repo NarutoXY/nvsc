@@ -1,36 +1,44 @@
--- Impatient, yes i am
-local present, impatient = pcall(require, "impatient")
+vim.cmd [[
+	syntax off
+	filetype off
+	filetype plugin indent off
+]]
 
-if present then
-  impatient.enable_profile()
-end
+local rtp = vim.opt.runtimepath:get()
+vim.opt.runtimepath = ""
+vim.opt.shadafile = "NONE"
 
--- Global vars (required many times)
-Log = require("log")
-Utils = require("utils")
-Config = vim.json.decode(Utils.fs.read_file(string.format("%s/config.json", vim.fn.stdpath("config"))))
+vim.g.loaded_gzip = false
+vim.g.loaded_matchit = false
+vim.g.loaded_netrwPlugin = false
+vim.g.loaded_tarPlugin = false
+vim.g.loaded_zipPlugin = false
+vim.g.loaded_man = false
+vim.g.loaded_2html_plugin = false
+vim.g.loaded_remote_plugins = false
 
-require("config").preFunc()
+vim.defer_fn(function()
+	vim.opt.shadafile = ""
+ 	vim.opt.runtimepath = rtp
+	
+	vim.cmd("packadd impatient.nvim")
+	require("impatient").enable_profile()
 
--- to load on startup
-local core_modules = {
-  "modules.core.options",
-  "modules.statusline",
-  "modules.plugin.config.lsp",
-  "packer_compiled",
-  "modules.plugin",
-  "modules.core.mappings",
-}
+	require("nvsc")
+	require("packer_compiled")
 
-local load = function(core_modules)
-  for k = 1, #core_modules do
-    local ok, err = pcall(require, core_modules[k])
-    if not ok then
-      vim.notify(string.format("Error loading %s\n%s", core_modules[k], err), vim.log.levels.ERROR)
-    end
-  end
-end
+	vim.cmd [[
+		rshada!
+		doautocmd BufRead
+		syntax on
+		packadd filetype.nvim
+		"filetype on
+		"filetype plugin indent on
+	]]
 
-load(core_modules)
-
-require("config").postFunc()
+	vim.defer_fn(function()
+		vim.cmd [[ 
+			silent! bufdo e
+		]]
+	end, 15)
+end, 10)
