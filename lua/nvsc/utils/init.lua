@@ -16,6 +16,7 @@ utils.plugin.get_plugin_idx = function(plug, plug_tbl)
 end
 
 utils.plugin.remove_defaults = function(plug_tbl, conf)
+  local plug_idx
   if #conf ~= 0 then
     for plug = 1, #conf do
       plug_idx = utils.plugin.get_plugin_idx(conf[plug], plug_tbl)
@@ -41,7 +42,7 @@ end
 ---@param val any
 ---@return boolean
 utils.tbl.has_value = function(tbl, val)
-  for index, value in ipairs(tbl) do
+  for _, value in ipairs(tbl) do
     if value == val then
       return true
     end
