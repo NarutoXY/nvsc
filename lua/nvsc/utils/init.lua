@@ -7,31 +7,16 @@ utils.plugin = {}
 utils.tbl = {}
 
 -- PLUGIN FUNCTIONS
-utils.plugin.get_plugin_idx = function(plug, plug_tbl)
-  for idx, plugin in pairs(plug_tbl) do
-    if plugin[1] == plug then
-      return idx
-    end
-  end
-end
-
 utils.plugin.remove_defaults = function(plug_tbl, conf)
-  local plug_idx
-  if #conf ~= 0 then
-    for plug = 1, #conf do
-      plug_idx = utils.plugin.get_plugin_idx(conf[plug], plug_tbl)
-      plug_tbl[plug_idx] = nil
-    end
+  for _, plugin in ipairs(conf) do
+plug_tbl[plugin] = nil
   end
   return plug_tbl
 end
 
 utils.plugin.append_plugin = function(plug_tbl, conf)
-  if #conf ~= 0 then
-    for plug = 1, #conf do
-      conf[plug][1] = conf[plug].plugin
-      plug_tbl[#plug_tbl + 1] = conf[plug]
-    end
+  for plugin, plug_conf in pairs(conf) do
+  	plug_tbl[plugin] = plug_conf
   end
   return plug_tbl
 end

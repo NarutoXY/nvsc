@@ -32,8 +32,6 @@ vim.defer_fn(function()
 		doautocmd BufRead
 		syntax on
 		packadd filetype.nvim
-		"filetype on
-		"filetype plugin indent on
 	]])
 
   vim.defer_fn(function()

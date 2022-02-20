@@ -1,0 +1,25 @@
+# EXAMPLE NVSC CONFIG
+
+# Mappings
+[mappings]
+	# Refer to https://github.com/mrjones2014/legendary.nvim#configuration-and-setup for more info on how to initialise mappings
+
+# Options
+[opts]
+	# Vim specific options
+	[opts.vim]
+	
+	# NVSC specific options
+	[opts.nvsc]
+
+[plugins]
+	# Disabled Plugins
+	disabled_plugins = []
+	
+	# Extra plugins to load
+	# Just like how you initialise plugins in packer
+	# [plugins.extra_plugins."my_awesome_username/my_awesome_plugin"]	
+	# event = "BufEnter"
+	# config = '''
+  #   require("my_awesome_config")
+	# '''

@@ -1,6 +1,3 @@
-# EXAMPLE NVSC CONFIG
-[nvsc]
-
 # Mappings
 [mappings]
 	# Refer to https://github.com/mrjones2014/legendary.nvim#configuration-and-setup for more info on how to initialise mappings
@@ -9,31 +6,30 @@
 [opts]
 	# Vim specific options
 	[opts.vim]
-	
+	undodir = "/home/naruto/.cache/nvim/undo"
+
 	# NVSC specific options
 	[opts.nvsc]
-		colorscheme = "rose_pine"
 
 [plugins]
 	# Disabled Plugins
-	disabled = [
+	disabled_plugins = [
 		"themercorp/themer.lua"
 	]
 	
 	# Extra plugins to load
 	# Just like how you initialise plugins in packer
-	[[plugins.extras]]
-	plugin = "~/projects/nvim_plugins/themer"
+	[plugins.extra_plugins."~/projects/nvim_plugins/themer"]	
 	event = "BufEnter"
 	config = '''
-            require("themer").setup({
-                colorscheme = "rose_pine",
-                styles = {
-                  	["function"] = { style = 'italic' },
-                   	functionbuiltin = { style = 'italic' },
-                   	variable = { style = 'italic' },
-                    	variableBuiltIn = { style = 'italic' },
-                  	parameter  = { style = 'italic' },
-                },
-            })
+	    require("themer").setup({
+	        colorscheme = "rose_pine",
+	        styles = {
+	          	["function"] = { style = 'italic' },
+	           	functionbuiltin = { style = 'italic' },
+	           	variable = { style = 'italic' },
+	            	variableBuiltIn = { style = 'italic' },
+	          	parameter  = { style = 'italic' },
+	        },
+	    })
 	'''

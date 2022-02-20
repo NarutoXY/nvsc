@@ -34,46 +34,56 @@ end
 
 local plugins = {
   -- Core
-  { "wbthomason/packer.nvim", opt = true },
-  { "lewis6991/impatient.nvim", opt = true },
-  { "nathom/filetype.nvim", opt = true },
-  { "nvim-lua/plenary.nvim", module = "plenary" },
+  ["wbthomason/packer.nvim"] = { opt = true },
+  ["lewis6991/impatient.nvim"] = { opt = true },
+  ["nathom/filetype.nvim"] = { opt = true },
+  ["nvim-lua/plenary.nvim"] = { module = "plenary" },
 
   -- Colors
-  {
-    "themercorp/themer.lua",
+  ["themercorp/themer.lua"] = {
     opt = true,
     event = "BufEnter",
     config = function()
-      require("themer").setup({
-        colorscheme = CONFIG.opts.nvsc.colorscheme or "kanagawa",
-        styles = {
-          comment = { style = "italic" },
-          ["function"] = { style = "italic" },
-          functionbuiltin = { style = "italic" },
-          variable = { style = "italic" },
-          variableBuiltIn = { style = "italic" },
-          parameter = { style = "italic" },
-        },
-      })
+	require("nvsc.modules.plugin.config.others").themer()
     end,
   },
 
   -- Git
-  {
-    "lewis6991/gitsigns.nvim",
+  ["lewis6991/gitsigns.nvim"] = {
     opt = true,
     config = function()
-      require("gitsigns").setup({})
+      require("nvsc.modules.plugin.config.others").gitsigns()
     end,
+    event = "BufWinEnter",
+  },
+
+  -- Syntax highlighting
+  ["nvim-treesitter/nvim-treesitter"] = {
+	opt = true,
+	config = function()
+		require("nvsc.modules.plugin.config.treesitter")
+	end,
+	event = "BufReadPost",
+	run = ":TSUpdate"
+  },
+
+  -- other treesitter goodies
+  ["nvim-treesitter/playground"] = {
+    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
+    opt = true,
+  },
+
+  -- refactor
+  ["nvim-treesitter/nvim-treesitter-refactor"] = {
+    
   },
 }
 
 -- Remove defaults
-plugins = UTILS.plugin.remove_defaults(plugins, CONFIG.plugins.disabled or {})
+plugins = UTILS.plugin.remove_defaults(plugins, CONFIG.plugins.disabled_plugins or {})
 
 -- Append user plugins
-plugins = UTILS.plugin.append_plugin(plugins, CONFIG.plugins.extras or {})
+plugins = UTILS.plugin.append_plugin(plugins, CONFIG.plugins.extra_plugins or {})
 
 packer.init({
   git = { depth = 1 },
@@ -94,6 +104,9 @@ packer.init({
 local use = packer.use
 packer.reset()
 
-for _, plugin in ipairs(plugins) do
-  use(plugin)
+for plugin, plug_conf in pairs(plugins) do
+  if type(plug_conf) == "table" then
+  		plug_conf[1] = plugin
+		use(plug_conf)
+	end
 end
