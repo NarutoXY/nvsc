@@ -2,7 +2,10 @@
 
 # Mappings
 [mappings]
-	# Refer to https://github.com/mrjones2014/legendary.nvim#configuration-and-setup for more info on how to initialise mappings
+	leader = " "
+  [mappings.vim]
+  # Refer to https://github.com/mrjones2014/legendary.nvim#configuration-and-setup for more info on how to initialise mappings
+  [mappings.telescope]
 
 # Options
 [opts]

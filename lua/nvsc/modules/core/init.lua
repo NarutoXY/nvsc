@@ -27,6 +27,8 @@ local opts = {
   splitright = true,
   termguicolors = true,
   shortmess = "sI",
+  foldmethod = "expr",
+  foldexpr = "nvim_treesitter#foldexpr()",
 }
 
 opts = vim.tbl_deep_extend("force", opts, CONFIG.opts.vim)

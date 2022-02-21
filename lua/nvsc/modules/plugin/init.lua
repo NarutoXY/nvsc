@@ -38,13 +38,14 @@ local plugins = {
   ["lewis6991/impatient.nvim"] = { opt = true },
   ["nathom/filetype.nvim"] = { opt = true },
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
+  ["tami5/sqlite.lua"] = { module = "sqlite" },
 
   -- Colors
   ["themercorp/themer.lua"] = {
     opt = true,
     event = "BufEnter",
     config = function()
-	require("nvsc.modules.plugin.config.others").themer()
+      require("nvsc.modules.plugin.config.others").themer()
     end,
   },
 
@@ -59,12 +60,12 @@ local plugins = {
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
-	opt = true,
-	config = function()
-		require("nvsc.modules.plugin.config.treesitter")
-	end,
-	event = "BufReadPost",
-	run = ":TSUpdate"
+    opt = true,
+    config = function()
+      require("nvsc.modules.plugin.config.treesitter")
+    end,
+    event = "BufReadPost",
+    run = ":TSUpdate",
   },
 
   -- other treesitter goodies
@@ -73,17 +74,32 @@ local plugins = {
     opt = true,
   },
 
-  -- refactor
-  ["nvim-treesitter/nvim-treesitter-refactor"] = {
-    
+  -- telescope
+  ["nvim-telescope/telescope.nvim"] = {
+    module = "telescope",
+    cmd = "Telescope",
+    config = function()
+      require("nvsc.modules.plugin.config.telescope")
+    end,
+    requires = {
+      {"nvim-telescope/telescope-fzf-native.nvim", make = true },
+      {"nvim-telescope/telescope-frecency.nvim"},
+      {"nvim-telescope/telescope-project.nvim"},
+      {"nvim-telescope/telescope-file-browser.nvim"},
+    },
   },
+  -- Wordle
+  ["shift-d/wordle.nvim"] = { command = "Wordle", branch = "finish-win" },
 }
 
 -- Remove defaults
-plugins = UTILS.plugin.remove_defaults(plugins, CONFIG.plugins.disabled_plugins or {})
+if not(next(CONFIG.plugins.disable_plugins or {})) then plugins = UTILS.plugin.remove_defaults(plugins, CONFIG.plugins.disabled_plugins or {}) end
 
 -- Append user plugins
-plugins = UTILS.plugin.append_plugin(plugins, CONFIG.plugins.extra_plugins or {})
+if not(next(CONFIG.plugins.extra_plugins or {})) then plugins = UTILS.plugin.append_plugin(plugins, CONFIG.plugins.extra_plugins or {}) end
+
+-- Override plugin table
+if not(next(CONFIG.plugins.override_plugins or {})) then plugins = vim.tbl_deep_extend("force", plugins, CONFIG.plugins.override_plugins or {}) end
 
 packer.init({
   git = { depth = 1 },
@@ -106,7 +122,7 @@ packer.reset()
 
 for plugin, plug_conf in pairs(plugins) do
   if type(plug_conf) == "table" then
-  		plug_conf[1] = plugin
-		use(plug_conf)
-	end
+    plug_conf[1] = plugin
+    use(plug_conf)
+  end
 end
