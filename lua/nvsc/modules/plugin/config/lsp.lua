@@ -23,7 +23,7 @@ local on_attach = function(_, bufnr)
 end
 
 -- Add completion capabilities (completion, snippets)
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) 
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for more lsp servers
 -- Use these servers and default configs

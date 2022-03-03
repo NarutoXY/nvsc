@@ -21,7 +21,7 @@ plug_conf.gitsigns = function()
 end
 
 plug_conf.autopairs = function()
-  require("nvim-autopairs").setup({enable_check_bracket_line = false, check_ts = true})
+  require("nvim-autopairs").setup({ enable_check_bracket_line = false, check_ts = true })
 end
 
 return plug_conf

@@ -8,7 +8,7 @@ local fmt = string.format
 -- "┃", "█", "", "", "", "", "", "", "●"
 
 local get_diag = function(str)
-  local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[str]})
+  local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[str] })
   return (count > 0) and " " .. count .. " " or ""
 end
 
