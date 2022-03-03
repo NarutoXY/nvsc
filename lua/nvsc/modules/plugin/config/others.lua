@@ -20,28 +20,8 @@ plug_conf.gitsigns = function()
   require("gitsigns").setup({})
 end
 
-plug_conf.treesitter_refactor = function()
-  require("nvim-treesitter.configs").setup({
-    refactor = {
-      highlight_current_scope = { enable = true },
-      smart_rename = {
-        enable = true,
-        keymaps = {
-          smart_rename = "grr",
-        },
-      },
-      navigation = {
-        enable = true,
-        keymaps = {
-          goto_definition = "gnd",
-          list_definitions = "gnD",
-          list_definitions_toc = "gO",
-          goto_next_usage = "<a-*>",
-          goto_previous_usage = "<a-#>",
-        },
-      },
-    },
-  })
+plug_conf.autopairs = function()
+  require("nvim-autopairs").setup({enable_check_bracket_line = false, check_ts = true})
 end
 
 return plug_conf

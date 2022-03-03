@@ -1,6 +1,7 @@
 local utils = {}
 
 utils.fs = require("nvsc.utils.fs")
+utils.ui = require("nvsc.utils.ui")
 
 utils.plugin = {}
 

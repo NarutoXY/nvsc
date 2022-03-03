@@ -2,33 +2,67 @@ local opt = vim.opt
 local g = vim.g
 
 local opts = {
-  clipboard = "unnamedplus",
-  cmdheight = 1,
-  ruler = false,
-  hidden = true,
-  ignorecase = true,
-  smartcase = true,
-  mouse = "a",
-  number = true,
-  numberwidth = 2,
-  relativenumber = true,
-  expandtab = true,
-  shiftwidth = 2,
-  smartindent = true,
-  tabstop = 2,
-  timeoutlen = 400,
-  updatetime = 100,
-  undofile = true,
-  fillchars = { eob = " " },
-  title = true,
-  cul = true,
-  signcolumn = "yes",
-  splitbelow = true,
-  splitright = true,
-  termguicolors = true,
-  shortmess = "sI",
-  foldmethod = "expr",
-  foldexpr = "nvim_treesitter#foldexpr()",
+-- General configuration
+termguicolors = true,
+showmode = false,
+
+-- Enable mouse support
+mouse = 'a',
+mousefocus = true,
+
+-- Enable line numbers and relative numbers
+number = true,
+relativenumber = true,
+
+-- Used by which-key.nvim
+timeoutlen = 500,
+
+-- Update the editor more frequently
+updatetime = 100,
+
+-- Start scrolling when we are 5 lines away from margins
+scrolloff = 5,
+
+-- Disable wrapping
+wrap = false,
+
+-- Make vim's default splitting directions something reasonable
+splitbelow = true,
+splitright = true,
+
+-- Synchronize the system clipboard with neovim's
+clipboard = "unnamedplus",
+
+-- Make sure the statusline is always shown
+laststatus = 2,
+
+-- Stop neovim from waiting after escape has been pressed
+ttimeoutlen = 5,
+
+-- Set up indenting
+expandtab = true,
+shiftwidth = 2,
+tabstop = 2,
+softtabstop = 2,
+
+-- Allow us to edit text that doesn't classify as characters
+-- in visual block mode
+virtualedit = "block",
+
+-- Show previews for substitutions etc.
+inccommand = "split",
+
+-- Make search results case insensitive
+ignorecase = true,
+
+	-- Enable undo files for every buffer
+	undofile = true,
+
+	-- Enable smart indentation
+	autoindent = true,
+	smartindent = true,
+	copyindent = true,
+	preserveindent = true,
 }
 
 opts = vim.tbl_deep_extend("force", opts, CONFIG.opts.vim)
@@ -38,7 +72,7 @@ for option, val in pairs(opts) do
 end
 
 -- disable nvim intro
-opt.shortmess:append(opts.shortmess)
+opt.shortmess:append("sIc")
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line

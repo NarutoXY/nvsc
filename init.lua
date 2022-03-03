@@ -21,9 +21,6 @@ vim.defer_fn(function()
   vim.opt.shadafile = ""
   vim.opt.runtimepath = rtp
 
-  vim.cmd("packadd impatient.nvim")
-  require("impatient").enable_profile()
-
   require("nvsc")
   require("packer_compiled")
 
@@ -31,7 +28,6 @@ vim.defer_fn(function()
 		rshada!
 		doautocmd BufRead
 		syntax on
-		packadd filetype.nvim
 	]])
 
   vim.defer_fn(function()

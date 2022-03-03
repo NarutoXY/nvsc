@@ -39,3 +39,18 @@
 	          },
 	      })
 	  '''
+[lsp]
+  servers = [  
+    "sumneko_lua",
+    "pyright",
+    "vuels",
+    "tsserver",
+    "svelte",
+    "html",
+    "cssls",
+    "jsonls",
+    "gopls",
+    "pyright",
+    "rust_analyzer",
+    "rnix"
+  ]
