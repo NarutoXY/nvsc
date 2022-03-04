@@ -17,7 +17,7 @@ utils.loadstring = function(string, scope)
   end
 end
 
-utils.inspect = function (...)
+utils.inspect = function(...)
   print(vim.inspect(...))
 end
 

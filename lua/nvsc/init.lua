@@ -13,7 +13,7 @@ end
 
 local modules = {
   start = { "nvsc.modules.core" },
-  defer = {"nvsc.modules.plugin"},
+  defer = { "nvsc.modules.plugin" },
 }
 
 local ok, err

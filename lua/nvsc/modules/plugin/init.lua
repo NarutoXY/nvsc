@@ -41,7 +41,7 @@ local plugins = {
       require("impatient").enable_profile()
     end,
   },
-  ["nathom/filetype.nvim"] = { opt = true, event = { "BufNewFile", "BufRead" }  },
+  ["nathom/filetype.nvim"] = { opt = true, event = { "BufNewFile", "BufRead" } },
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
   ["tami5/sqlite.lua"] = { module = "sqlite" },
   ["kyazdani42/nvim-web-devicons"] = { module = "nvim-web-devicons" },
@@ -60,7 +60,7 @@ local plugins = {
     after = "nvim-lspconfig",
     config = function()
       require("project_nvim").setup({})
-    end
+    end,
   },
   -- Colors
   ["themercorp/themer.lua"] = {
@@ -77,9 +77,11 @@ local plugins = {
     config = function()
       require("nvsc.modules.plugin.config.others").gitsigns()
     end,
-    setup = function() vim.defer_fn(function ()
-      require("packer").loader("gitsigns.nvim")
-    end, 10) end
+    setup = function()
+      vim.defer_fn(function()
+        require("packer").loader("gitsigns.nvim")
+      end, 10)
+    end,
   },
 
   -- Syntax highlighting
@@ -126,10 +128,15 @@ local plugins = {
     end,
     after = "telescope.nvim",
   },
-  
+
   -- colorizer
-  ["norcalli/nvim-colorizer.lua"] = { after = "nvim-treesitter", config = function() require'colorizer'.setup() end },
-  
+  ["norcalli/nvim-colorizer.lua"] = {
+    after = "nvim-treesitter",
+    config = function()
+      require("colorizer").setup()
+    end,
+  },
+
   -- mkdir
   ["jghauser/mkdir.nvim"] = {
     config = function()
@@ -180,11 +187,16 @@ local plugins = {
       require("nvsc.modules.plugin.config.statusline")
     end,
     event = "ColorScheme",
-    after = "themer"
+    after = "themer",
   },
 
   -- nvim tree
-  ["kyazdani42/nvim-tree.lua"] = { cmd = {"NvimTreeToggle", "NvimTreeFocus"}, config = function() require("nvsc.modules.plugin.config.tree") end },
+  ["kyazdani42/nvim-tree.lua"] = {
+    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    config = function()
+      require("nvsc.modules.plugin.config.tree")
+    end,
+  },
 }
 
 -- Remove defaults
