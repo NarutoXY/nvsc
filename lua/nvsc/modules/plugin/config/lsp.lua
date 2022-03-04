@@ -2,7 +2,7 @@
 local ok, nvim_lsp = pcall(require, "lspconfig")
 
 if not ok then
-  Log.error("nvim-lspconfig isn't available")
+  LOG.error("nvim-lspconfig isn't available")
 end
 
 local on_attach = function(_, bufnr)

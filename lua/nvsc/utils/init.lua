@@ -17,6 +17,10 @@ utils.loadstring = function(string, scope)
   end
 end
 
+utils.inspect = function (...)
+  print(vim.inspect(...))
+end
+
 -- PLUGIN FUNCTIONS
 utils.plugin.remove_defaults = function(plug_tbl, conf)
   for _, plugin in ipairs(conf) do

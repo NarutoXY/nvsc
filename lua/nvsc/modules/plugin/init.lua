@@ -38,11 +38,10 @@ local plugins = {
   ["lewis6991/impatient.nvim"] = {
     opt = true,
     config = function()
-      require("impatient")
+      require("impatient").enable_profile()
     end,
-    event = "VimEnter",
   },
-  ["nathom/filetype.nvim"] = { opt = true, after = "impatient.nvim" },
+  ["nathom/filetype.nvim"] = { opt = true, event = { "BufNewFile", "BufRead" }  },
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
   ["tami5/sqlite.lua"] = { module = "sqlite" },
   ["kyazdani42/nvim-web-devicons"] = { module = "nvim-web-devicons" },
@@ -57,7 +56,12 @@ local plugins = {
   },
   ["folke/lua-dev.nvim"] = { module = "lua-dev" },
   ["jose-elias-alvarez/null-ls.nvim"] = { module = "null-ls" },
-
+  ["ahmedkhalf/project.nvim"] = {
+    after = "nvim-lspconfig",
+    config = function()
+      require("project_nvim").setup({})
+    end
+  },
   -- Colors
   ["themercorp/themer.lua"] = {
     opt = true,
@@ -73,7 +77,9 @@ local plugins = {
     config = function()
       require("nvsc.modules.plugin.config.others").gitsigns()
     end,
-    event = "BufRead",
+    setup = function() vim.defer_fn(function ()
+      require("packer").loader("gitsigns.nvim")
+    end, 10) end
   },
 
   -- Syntax highlighting
@@ -82,21 +88,14 @@ local plugins = {
     config = function()
       require("nvsc.modules.plugin.config.treesitter")
     end,
-    event = "BufReadPost",
+    event = { "ColorScheme" },
+    after = "themer",
     run = ":TSUpdate",
   },
 
   -- other treesitter goodies
   ["nvim-treesitter/playground"] = {
     cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-    opt = true,
-  },
-
-  ["windwp/nvim-autopairs"] = {
-    config = function()
-      require("nvsc.modules.plugin.config.others").autopairs()
-    end,
-    after = "nvim-treesitter",
     opt = true,
   },
 
@@ -127,7 +126,10 @@ local plugins = {
     end,
     after = "telescope.nvim",
   },
-
+  
+  -- colorizer
+  ["norcalli/nvim-colorizer.lua"] = { after = "nvim-treesitter", config = function() require'colorizer'.setup() end },
+  
   -- mkdir
   ["jghauser/mkdir.nvim"] = {
     config = function()
@@ -178,7 +180,11 @@ local plugins = {
       require("nvsc.modules.plugin.config.statusline")
     end,
     event = "ColorScheme",
+    after = "themer"
   },
+
+  -- nvim tree
+  ["kyazdani42/nvim-tree.lua"] = { cmd = {"NvimTreeToggle", "NvimTreeFocus"}, config = function() require("nvsc.modules.plugin.config.tree") end },
 }
 
 -- Remove defaults

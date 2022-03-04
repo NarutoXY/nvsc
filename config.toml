@@ -13,9 +13,10 @@
 
 	# NVSC specific options
 	[opts.nvsc]
-	pre_func = '''
-		vim.g.sqlite_clib_path = require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")
-	'''
+	  pre_func = '''
+	  	vim.g.sqlite_clib_path = require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")
+	  '''
+    profile = true
 
 [plugins]
 	# Disabled Plugins
@@ -26,16 +27,18 @@
 	# Extra plugins to load
 	# Just like how you initialise plugins in packer
 	[plugins.extra_plugins."~/projects/nvim_plugins/themer"]	
-	  event = "BufEnter"
+	  opt = true
+	  after = "filetype.nvim"
+	  as = "themer"
 	  config = '''
 	      require("themer").setup({
 	          colorscheme = "rose_pine",
 	          styles = {
-	            	["function"] = { style = 'italic' },
-	             	functionbuiltin = { style = 'italic' },
-	             	variable = { style = 'italic' },
-	              	variableBuiltIn = { style = 'italic' },
-	            	parameter  = { style = 'italic' },
+	            	["function"] = { italic = true },
+	             	functionbuiltin = { italic = true },
+	             	variable = { italic = true },
+	              variableBuiltIn = { italic = true },
+	            	parameter  = { italic = true },
 	          },
 	      })
 	  '''

@@ -1,16 +1,7 @@
 local colors = {}
 
 local function highlight(group, color)
-  local style = color.style and "gui=" .. color.style or "gui=NONE"
-  local fg = color.fg and "guifg=" .. color.fg or "guifg=NONE"
-  local bg = color.bg and "guibg=" .. color.bg or "guibg=NONE"
-  local sp = color.sp and "guisp=" .. color.sp or ""
-  local hl = "highlight " .. group .. " " .. style .. " " .. fg .. " " .. bg .. " " .. sp
-  vim.cmd(hl)
-
-  if color.link then
-    vim.cmd("highlight! link " .. group .. " " .. color.link)
-  end
+  vim.api.nvim_set_hl(0, group, color)
 end
 
 local function fromhl(hl)
@@ -30,13 +21,14 @@ end
 
 local function colors_from_theme()
   return {
-    bg = fromhl("StatusLine").bg, -- or "#2E3440",
-    alt = fromhl("CursorLine").bg, -- or "#475062",
-    fg = fromhl("StatusLine").fg, -- or "#8FBCBB",
-    hint = fromhl("DiagnosticHint").bg or "#5E81AC",
-    info = fromhl("DiagnosticInfo").bg or "#81A1C1",
-    warn = fromhl("DiagnosticWarn").bg or "#EBCB8B",
-    err = fromhl("DiagnosticError").bg or "#EC5F67",
+    bg = fromhl("StatusLine").bg or "#2E3440",
+    sel = fromhl("ThemerSelected").bg or fromhl("TelescopeSelection").bg or "#2E3440",
+    alt = fromhl("NormalFloat").bg or "#475062",
+    fg = fromhl("Normal").bg or "#ECEFF4",
+    hint = fromhl("DiagnosticHint").fg,
+    info = fromhl("DiagnosticInfo").fg,
+    warn = fromhl("DiagnosticWarn").fg,
+    err = fromhl("DiagnosticError").fg,
     black = term(0, "#434C5E"),
     red = term(1, "#EC5F67"),
     green = term(2, "#8FBCBB"),
@@ -48,68 +40,50 @@ local function colors_from_theme()
   }
 end
 
-local function tabline_colors_from_theme()
-  return {
-    tabl = fromhl("TabLine"),
-    norm = fromhl("Normal"),
-    sel = fromhl("TabLineSel"),
-    fill = fromhl("TabLineFill"),
-  }
-end
-
 colors.gen_highlights = function()
   local c = colors_from_theme()
   local sfg = vim.o.background == "dark" and c.black or c.white
   local sbg = vim.o.background == "dark" and c.white or c.black
-  local ct = tabline_colors_from_theme()
   colors.colors = c
   local groups = {
-    FlnViBlack = { fg = c.white, bg = c.black, style = "bold" },
-    FlnViRed = { fg = c.bg, bg = c.red, style = "bold" },
-    FlnViGreen = { fg = c.bg, bg = c.green, style = "bold" },
-    FlnViYellow = { fg = c.bg, bg = c.yellow, style = "bold" },
-    FlnViBlue = { fg = c.bg, bg = c.blue, style = "bold" },
-    FlnViMagenta = { fg = c.bg, bg = c.magenta, style = "bold" },
-    FlnViCyan = { fg = c.bg, bg = c.cyan, style = "bold" },
-    FlnViWhite = { fg = c.bg, bg = c.white, style = "bold" },
+    FlnViBlack = { fg = c.white, bg = c.black, bold = true },
+    FlnViRed = { fg = c.bg, bg = c.red, bold = true },
+    FlnViGreen = { fg = c.bg, bg = c.green, bold = true },
+    FlnViYellow = { fg = c.bg, bg = c.yellow, bold = true },
+    FlnViBlue = { fg = c.bg, bg = c.blue, bold = true },
+    FlnViMagenta = { fg = c.bg, bg = c.magenta, bold = true },
+    FlnViCyan = { fg = c.bg, bg = c.cyan, bold = true },
+    FlnViWhite = { fg = c.bg, bg = c.white, bold = true },
 
-    FlnBlack = { fg = c.black, bg = c.white, style = "bold" },
-    FlnRed = { fg = c.red, bg = c.bg, style = "bold" },
-    FlnGreen = { fg = c.green, bg = c.bg, style = "bold" },
-    FlnYellow = { fg = c.yellow, bg = c.bg, style = "bold" },
-    FlnBlue = { fg = c.blue, bg = c.bg, style = "bold" },
-    FlnMagenta = { fg = c.magenta, bg = c.bg, style = "bold" },
-    FlnCyan = { fg = c.cyan, bg = c.bg, style = "bold" },
-    FlnWhite = { fg = c.white, bg = c.bg, style = "bold" },
+    FlnBlack = { fg = c.black, bg = c.white, bold = true },
+    FlnRed = { fg = c.red, bg = c.bg, bold = true },
+    FlnGreen = { fg = c.green, bg = c.bg, bold = true },
+    FlnYellow = { fg = c.yellow, bg = c.bg, bold = true },
+    FlnBlue = { fg = c.blue, bg = c.bg, bold = true },
+    FlnMagenta = { fg = c.magenta, bg = c.bg, bold = true },
+    FlnCyan = { fg = c.cyan, bg = c.bg, bold = true },
+    FlnWhite = { fg = c.white, bg = c.bg, bold = true },
 
     -- Diagnostics
-    FlnHint = { fg = c.black, bg = c.hint, style = "bold" },
-    FlnInfo = { fg = c.black, bg = c.info, style = "bold" },
-    FlnWarn = { fg = c.black, bg = c.warn, style = "bold" },
-    FlnError = { fg = c.black, bg = c.err, style = "bold" },
-    FlnStatus = { fg = sfg, bg = sbg, style = "bold" },
+    FlnHint = { fg = c.black, bg = c.hint, bold = true },
+    FlnInfo = { fg = c.black, bg = c.info, bold = true },
+    FlnWarn = { fg = c.black, bg = c.warn, bold = true },
+    FlnError = { fg = c.black, bg = c.err, bold = true },
+    FlnStatus = { fg = sfg, bg = sbg, bold = true },
 
     -- Dianostic Seperators
-    FlnBgHint = { fg = ct.sel.bg, bg = c.hint },
+    FlnBgHint = { fg = c.sel, bg = c.hint },
     FlnHintInfo = { fg = c.hint, bg = c.info },
     FlnInfoWarn = { fg = c.info, bg = c.warn },
     FlnWarnError = { fg = c.warn, bg = c.err },
-    FlnErrorStatus = { fg = c.err, bg = c.alt },
+    FlnErrorStatus = { fg = c.err, bg = c.bg },
     FlnStatusBg = { fg = sbg, bg = c.bg },
 
-    FlnAlt = { fg = sbg, bg = ct.sel.bg },
-    FlnFileInfo = { fg = c.fg, bg = c.alt },
-    FlnAltSep = { fg = c.bg, bg = ct.sel.bg },
-    FlnGitBranch = { fg = c.yellow, bg = c.bg },
+    FlnAlt = { fg = c.fg, bg = c.alt },
+    FlnFileInfo = { fg = c.fg, bg = c.bg },
+    FlnAltSep = { fg = c.bg, bg = c.sel },
+    FlnGitBranch = { fg = c.magenta, bg = c.bg },
     FlnGitSeperator = { fg = c.bg, bg = c.alt },
-
-    -- Tabby
-    TbyHead = { fg = ct.fill.bg, bg = c.cyan },
-    TbyHeadSep = { fg = c.cyan, bg = ct.fill.bg },
-    TbyActive = { fg = ct.sel.fg, bg = ct.sel.bg, style = "bold" },
-    TbyActiveSep = { fg = ct.sel.bg, bg = ct.fill.bg },
-    TbyBoldLine = { fg = ct.tabl.fg, bg = ct.tabl.bg, style = "bold" },
-    TbyLineSep = { fg = ct.tabl.bg, bg = ct.fill.bg },
   }
   for k, v in pairs(groups) do
     highlight(k, v)

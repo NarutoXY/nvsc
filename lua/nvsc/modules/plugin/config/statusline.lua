@@ -9,7 +9,7 @@ local fmt = string.format
 
 local get_diag = function(str)
   local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[str] })
-  return (count > 0) and " " .. count .. " " or ""
+  return (count > 0) and tostring(count) or ""
 end
 
 local function vi_mode_hl()
@@ -78,7 +78,7 @@ local c = {
   },
   lsp_error = {
     provider = function()
-      return get_diag("E")
+      return get_diag("ERROR")
     end,
     hl = "FlnError",
     left_sep = { str = "", hl = "FlnErrorStatus", always_visible = true },
@@ -86,21 +86,21 @@ local c = {
   },
   lsp_warn = {
     provider = function()
-      return get_diag("W")
+      return get_diag("WARN")
     end,
     hl = "FlnWarn",
     right_sep = { str = "", hl = "FlnInfoWarn", always_visible = true },
   },
   lsp_info = {
     provider = function()
-      return get_diag("I")
+      return get_diag("INFO")
     end,
     hl = "FlnInfo",
     right_sep = { str = "", hl = "FlnHintInfo", always_visible = true },
   },
   lsp_hint = {
     provider = function()
-      return get_diag("H")
+      return get_diag("HINT")
     end,
     hl = "FlnHint",
     right_sep = { str = "", hl = "FlnBgHint", always_visible = true },
