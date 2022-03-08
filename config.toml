@@ -22,17 +22,18 @@
 	# Disabled Plugins
 	disabled_plugins = [
 		"themercorp/themer.lua"
+	  "feline-nvim/feline.nvim"
 	]
 	
 	# Extra plugins to load
 	# Just like how you initialise plugins in packer
-	[plugins.extra_plugins."~/projects/nvim_plugins/themer"]	
+	[plugins.override_plugins."~/projects/nvim_plugins/themer"]	
 	  opt = true
 	  after = "filetype.nvim"
 	  as = "themer"
 	  config = '''
 	      require("themer").setup({
-	          colorscheme = "rose_pine",
+	          colorscheme = "everforest",
 	          styles = {
 	            	["function"] = { italic = true },
 	             	functionbuiltin = { italic = true },
@@ -42,6 +43,7 @@
 	          },
 	      })
 	  '''
+  
 [lsp]
   servers = [  
     "sumneko_lua",

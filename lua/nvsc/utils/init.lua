@@ -29,13 +29,6 @@ utils.plugin.remove_defaults = function(plug_tbl, conf)
   return plug_tbl
 end
 
-utils.plugin.append_plugin = function(plug_tbl, conf)
-  for plugin, plug_conf in pairs(conf) do
-    plug_tbl[plugin] = plug_conf
-  end
-  return plug_tbl
-end
-
 ---TBL FUNCTIONS
 ---Check if a table has given value
 ---@param tbl table

@@ -9,7 +9,7 @@ local function fromhl(hl)
   local list = vim.api.nvim_get_hl_by_name(hl, true)
   for k, v in pairs(list) do
     local name = k == "background" and "bg" or "fg"
-    result[name] = string.format("#%06x", v)
+    _, result[name] = pcall(string.format, "#%06x", v)
   end
   return result
 end
@@ -81,7 +81,7 @@ colors.gen_highlights = function()
 
     FlnAlt = { fg = c.fg, bg = c.alt },
     FlnFileInfo = { fg = c.fg, bg = c.bg },
-    FlnAltSep = { fg = c.bg, bg = c.sel },
+    FlnAltSep = { fg = c.bg, bg = c.alt },
     FlnGitBranch = { fg = c.magenta, bg = c.bg },
     FlnGitSeperator = { fg = c.bg, bg = c.alt },
   }

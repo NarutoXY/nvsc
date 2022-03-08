@@ -101,7 +101,7 @@ for _, server in pairs(servers) do
 end
 
 -- Change icons for Lsp Diagnostic
-local signs = { Error = "", Warn = "", Info = "כֿ", Hint = "" }
+local signs = { Error = "", Warn = "", Info = " ", Hint = "" }
 for sign, icon in pairs(signs) do
   vim.fn.sign_define(
     "DiagnosticSign" .. sign,
