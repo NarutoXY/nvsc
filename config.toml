@@ -13,10 +13,9 @@
 
 	# NVSC specific options
 	[opts.nvsc]
-	  pre_func = '''
-	  	vim.g.sqlite_clib_path = require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")
-	  '''
     profile = true
+    [opts.nvsc.globals]
+	    sqlite_clib_path = '''return require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")'''
 
 [plugins]
 	# Disabled Plugins
@@ -27,13 +26,19 @@
 	
 	# Extra plugins to load
 	# Just like how you initialise plugins in packer
+	[plugins.override_plugins."~/projects/nvim_plugins/dim.lua"]	
+	[plugins.override_plugins."~/projects/nvim_plugins/graphene.lua"]	
+	[plugins.override_plugins."~/projects/nvim_plugins/ytmmusic.lua"]	
+
 	[plugins.override_plugins."~/projects/nvim_plugins/themer"]	
 	  opt = true
-	  after = "filetype.nvim"
+	  setup = '''
+      vim.defer_fn(function() require("packer").loader("themer") end, 1)
+	  '''
 	  as = "themer"
 	  config = '''
 	      require("themer").setup({
-	          colorscheme = "everforest",
+	          colorscheme = "kanagawa",
 	          styles = {
 	            	["function"] = { italic = true },
 	             	functionbuiltin = { italic = true },
@@ -43,9 +48,10 @@
 	          },
 	      })
 	  '''
-  
+
 [lsp]
-  servers = [  
+  servers = [
+    "clangd",
     "sumneko_lua",
     "pyright",
     "vuels",
@@ -57,5 +63,9 @@
     "gopls",
     "pyright",
     "rust_analyzer",
-    "rnix"
+    "rnix",
+    "pylsp"
   ]
+  
+  [lsp.pylsp]
+    cmd = [ "python-language-server" ]

@@ -28,6 +28,7 @@ ignore = {
 exclude_files = {
   "lua/packer_compiled.lua",
   "lua/nvsc/toml.lua",
+  "lua/nvsc/utils/profile.lua"
 }
 
 -- vim: ft=lua sw=2 ts=2

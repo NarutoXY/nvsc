@@ -79,7 +79,21 @@ require("null-ls").setup({
     require("null-ls").builtins.formatting.stylua,
     require("null-ls").builtins.formatting.prettier,
     require("null-ls").builtins.code_actions.gitsigns,
+    require("null-ls").builtins.diagnostics.pylint,
+    require("null-ls").builtins.diagnostics.cppcheck,
+    require("null-ls").builtins.diagnostics.vulture,
   },
+  -- you can reuse a shared lspconfig on_attach callback here
+  on_attach = function(client)
+    if client.resolved_capabilities.document_formatting then
+      vim.cmd([[
+          augroup LspFormatting
+              autocmd! * <buffer>
+              autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+          augroup END
+          ]])
+    end
+  end,
 })
 
 -- Setup all servers from servers tabl
@@ -96,7 +110,7 @@ for _, server in pairs(servers) do
       end,
     })
   else
-    nvim_lsp[server].setup(config)
+    nvim_lsp[server].setup(CONFIG.lsp[server] or config)
   end
 end
 

@@ -11,7 +11,6 @@ local mappings = {
     ["<C-a>"] = actions.send_to_qflist + actions.open_qflist,
     ["<C-h>"] = "which_key",
     ["<C-l>"] = actions_layout.toggle_preview,
-    ["<C-y>"] = set_prompt_to_entry_value,
     ["<C-d>"] = actions.preview_scrolling_up,
     ["<C-f>"] = actions.preview_scrolling_down,
     ["<C-n>"] = require("telescope.actions").cycle_history_next,
@@ -21,7 +20,6 @@ local mappings = {
     ["<C-j>"] = actions.move_selection_next,
     ["<c-p>"] = actions_layout.toggle_prompt_position,
     ["<C-k>"] = actions.move_selection_previous,
-    ["<C-y>"] = set_prompt_to_entry_value,
     ["<C-o>"] = actions.select_vertical,
     ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
     ["<C-a>"] = actions.send_to_qflist + actions.open_qflist,
@@ -34,14 +32,13 @@ local mappings = {
   },
 }
 
-mappings = vim.tbl_deep_extend("force", mappings, CONFIG.mappings.telescope or {})
-
 local theme = themes.get_ivy({
-  selection_caret = "▸",
+  selection_caret = "▸ ",
   prompt_prefix = "🔭",
   results_title = "~ Results ~",
   shorten_path = true,
-  winblend = 20,
+  winblend = 0,
+  use_less = true,
   layout_config = {
     width = 0.99,
     height = 0.5,
@@ -70,12 +67,9 @@ local theme = themes.get_ivy({
 })
 
 if CONFIG.telescope_layout then
-  theme = pcall(loadstring(telescope_layout))
+  theme = pcall(loadstring(CONFIG.telescope_layout))
 end
 
 require("telescope").setup({
   defaults = theme,
-  extensions = {
-    ["ui-select"] = { theme },
-  },
 })

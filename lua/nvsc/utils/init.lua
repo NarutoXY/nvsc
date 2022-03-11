@@ -1,8 +1,6 @@
 local utils = {}
 
 utils.fs = require("nvsc.utils.fs")
-utils.ui = require("nvsc.utils.ui")
-
 utils.plugin = {}
 
 utils.tbl = {}
@@ -30,18 +28,5 @@ utils.plugin.remove_defaults = function(plug_tbl, conf)
 end
 
 ---TBL FUNCTIONS
----Check if a table has given value
----@param tbl table
----@param val any
----@return boolean
-utils.tbl.has_value = function(tbl, val)
-  for _, value in ipairs(tbl) do
-    if value == val then
-      return true
-    end
-  end
-
-  return false
-end
 
 return utils

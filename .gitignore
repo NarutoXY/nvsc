@@ -2,3 +2,5 @@ lua/packer_compiled.lua
 config.toml
 ytmmusic_auth
 sqlite_path
+sessions/
+lua/custom

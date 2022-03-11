@@ -65,7 +65,7 @@ local opts = {
   preserveindent = true,
 }
 
-opts = vim.tbl_deep_extend("force", opts, CONFIG.opts.vim)
+opts = vim.tbl_extend("force", opts, CONFIG.opts.vim)
 
 for option, val in pairs(opts) do
   opt[option] = val
@@ -78,4 +78,8 @@ opt.shortmess:append("sIc")
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append("<>[]hl")
 
-g.mapleader = CONFIG.opts.nvsc.mapleader or " "
+g.mapleader = CONFIG.opts.nvsc.globals.mapleader or " "
+
+for key, val in pairs(CONFIG.opts.nvsc.globals) do
+  _, vim.g[key] = pcall(loadstring(val))
+end

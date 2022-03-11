@@ -31,7 +31,7 @@ for _, module in ipairs(modules.defer) do
     if not ok then
       LOG.error("Error loading ", module, "\n", err)
     end
-  end, 10)
+  end, 5)
 end
 
 if CONFIG.opts.nvsc.post_func then
