@@ -3,6 +3,7 @@ local ok, nvim_lsp = pcall(require, "lspconfig")
 
 if not ok then
   LOG.error("nvim-lspconfig isn't available")
+  return
 end
 
 local on_attach = function(_, bufnr)
@@ -81,7 +82,7 @@ require("null-ls").setup({
     require("null-ls").builtins.code_actions.gitsigns,
     require("null-ls").builtins.diagnostics.pylint,
     require("null-ls").builtins.diagnostics.cppcheck,
-    require("null-ls").builtins.diagnostics.vulture,
+    -- require("null-ls").builtins.diagnostics.vulture,
   },
   -- you can reuse a shared lspconfig on_attach callback here
   on_attach = function(client)

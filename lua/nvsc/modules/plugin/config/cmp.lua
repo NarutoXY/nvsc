@@ -1,4 +1,7 @@
+vim.cmd([[PackerLoad LuaSnip]])
+vim.cmd([[PackerLoad lua-dev.nvim]])
 local cmp = require("cmp")
+local types = require("cmp.types")
 local luasnip = require("luasnip")
 local neogen = require("neogen")
 
@@ -65,6 +68,9 @@ local function get_treesitter_hl()
   end, true)
   return matches
 end
+local str = require("cmp.utils.str")
+
+local kind = require("nvsc.modules.lsp_kind")
 
 luasnip.config.setup({
   region_check_events = "CursorMoved",
@@ -74,17 +80,30 @@ luasnip.config.setup({
 local function t(string)
   return vim.api.nvim_replace_termcodes(string, true, true, true)
 end
+
 local border = {
-"╭", "─", "╮", "│", "╯", "─", "╰", "│"
+  "╔",
+  "═",
+  "╗",
+  "║",
+  "╝",
+  "═",
+  "╚",
+  "║",
 }
+
+-- local scrollbar = "┃"
+local scrollbar = "║"
 
 cmp.setup({
   window = {
     completion = {
       border = border,
+      scrollbar = scrollbar,
     },
     documentation = {
       border = border,
+      scrollbar = scrollbar,
     },
   },
   snippet = {
@@ -92,20 +111,6 @@ cmp.setup({
       require("luasnip").lsp_expand(args.body)
     end,
   },
-formatting = {
-      format = function(entry, vim_item)
-         local icons = require("nvsc.modules.lsp_kind")
-         vim_item.kind = string.format("%s %s", icons[vim_item.kind], vim_item.kind)
-
-         vim_item.menu = ({
-            nvim_lsp = "[LSP]",
-            nvim_lua = "[Lua]",
-            buffer = "[BUF]",
-         })[entry.source.name]
-
-         return vim_item
-      end,
-   },
   mapping = {
     ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), { "i", "s", "c" }),
     ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i", "s", "c" }),
@@ -117,24 +122,14 @@ formatting = {
           cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
         end
         cmp.confirm()
-      elseif require('neogen').jumpable() then
-        require('neogen').jump_next()
       else
         fallback()
       end
     end, {
       "i",
       "s",
+      "c",
     }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif neogen.jumpable(true) then
-        require('neogen').jump_prev()
-      else
-        fallback()
-      end
-    end),
     ["<C-l>"] = cmp.mapping(function(fallback)
       if luasnip.expand_or_jumpable() then
         vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
@@ -188,6 +183,19 @@ formatting = {
     end
     return true
   end,
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.kind = string.format("%s %s", kind[vim_item.kind], vim_item.kind)
+
+      vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        nvim_lua = "[Lua]",
+        buffer = "[BUF]",
+      })[entry.source.name]
+
+      return vim_item
+    end,
+  },
   sorting = {
     comparators = cmp.config.compare.recently_used,
   },
@@ -199,12 +207,12 @@ formatting = {
 
 cmp.setup.cmdline(":", {
   completion = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    scrollbar = "║",
+    border = border,
+    scrollbar = scrollbar,
   },
   documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    scrollbar = "║",
+    border = border,
+    scrollbar = scrollbar,
   },
   sources = cmp.config.sources({
     { name = "path" },
@@ -224,11 +232,11 @@ cmp.setup.cmdline("/", {
     return true
   end,
   completion = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    scrollbar = "║",
+    border = border,
+    scrollbar = scrollbar,
   },
   documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    scrollbar = "║",
+    border = border,
+    scrollbar = scrollbar,
   },
 })

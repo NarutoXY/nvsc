@@ -14,21 +14,27 @@
 	# NVSC specific options
 	[opts.nvsc]
     profile = true
-    [opts.nvsc.globals]
-	    sqlite_clib_path = '''return require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")'''
+
+[globals]
+  sqlite_clib_path = '''return require("nvsc.utils").fs.read_file(vim.fn.stdpath("config") .. "/sqlite_path")'''
 
 [plugins]
 	# Disabled Plugins
 	disabled_plugins = [
 		"themercorp/themer.lua"
-	  "feline-nvim/feline.nvim"
 	]
 	
 	# Extra plugins to load
 	# Just like how you initialise plugins in packer
 	[plugins.override_plugins."~/projects/nvim_plugins/dim.lua"]	
+	  after = [ "nvim-lspconfig" "nvim-treesitter" ]
+	  config = '''require("dim").setup({ disable_lsp_decorations = true })'''
+
 	[plugins.override_plugins."~/projects/nvim_plugins/graphene.lua"]	
+	  cmd = "Graphene"
+
 	[plugins.override_plugins."~/projects/nvim_plugins/ytmmusic.lua"]	
+    module = "ytmmusic"
 
 	[plugins.override_plugins."~/projects/nvim_plugins/themer"]	
 	  opt = true
@@ -46,6 +52,15 @@
 	              variableBuiltIn = { italic = true },
 	            	parameter  = { italic = true },
 	          },
+    remaps = {
+      highlights = {
+        globals = {
+          base = {
+            Pmenu = { link = "ThemerNormalFloat" },
+          },
+        },
+      },
+    },
 	      })
 	  '''
 
@@ -53,7 +68,6 @@
   servers = [
     "clangd",
     "sumneko_lua",
-    "pyright",
     "vuels",
     "tsserver",
     "svelte",
@@ -66,6 +80,3 @@
     "rnix",
     "pylsp"
   ]
-  
-  [lsp.pylsp]
-    cmd = [ "python-language-server" ]

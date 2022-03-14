@@ -13,6 +13,15 @@ plug_conf.themer = function()
       variableBuiltIn = { style = "italic" },
       parameter = { style = "italic" },
     },
+    remaps = {
+      highlights = {
+        globals = {
+          base = {
+            Pmenu = { link = "ThemerNormalFloat" },
+          },
+        },
+      },
+    },
   })
 end
 

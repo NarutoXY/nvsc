@@ -27,6 +27,16 @@ utils.plugin.remove_defaults = function(plug_tbl, conf)
   return plug_tbl
 end
 
+utils.plugin.count = 0
+
+--- Defer plugin loading
+--- @param timer number time to defer by
+utils.plugin.defer = function(timer)
+  timer = timer or 1
+  utils.plugin.count = utils.plugin.count + timer
+  return utils.plugin.count
+end
+
 ---TBL FUNCTIONS
 
 return utils
